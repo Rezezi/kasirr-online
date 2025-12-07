@@ -5,24 +5,25 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 
-// Main website routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Admin authentication routes
+// Admin Authentication
 Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
-// Admin panel routes
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/pos', [AdminController::class, 'pos'])->name('pos');
-    Route::get('/products', [AdminController::class, 'products'])->name('products');
-    Route::get('/inventory', [AdminController::class, 'inventory'])->name('inventory');
-    Route::get('/sales', [AdminController::class, 'sales'])->name('sales');
-    Route::get('/customers', [AdminController::class, 'customers'])->name('customers');
-    Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
-    Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
-    Route::get('/staff', [AdminController::class, 'staff'])->name('staff');
-    Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
-});
+// Admin Routes
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+Route::get('/admin/users/create', [AdminController::class, 'createUser'])->name('admin.users.create');
+Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
+Route::get('/admin/users/{id}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
+Route::put('/admin/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+
+Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
+Route::get('/admin/products/create', [AdminController::class, 'createProduct'])->name('admin.products.create');
+Route::post('/admin/products', [AdminController::class, 'storeProduct'])->name('admin.products.store');
+Route::get('/admin/products/{id}/edit', [AdminController::class, 'editProduct'])->name('admin.products.edit');
+Route::put('/admin/products/{id}', [AdminController::class, 'updateProduct'])->name('admin.products.update');
+Route::delete('/admin/products/{id}', [AdminController::class, 'deleteProduct'])->name('admin.products.delete');

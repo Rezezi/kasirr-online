@@ -6,6 +6,21 @@ use Illuminate\Http\Request;
 
 class AdminAuthController extends Controller
 {
+    private $users = [
+        [
+            'email' => 'admin@store.com',
+            'password' => 'admin123',
+            'name' => 'Admin User',
+            'role' => 'admin'
+        ],
+        [
+            'email' => 'cashier@store.com',
+            'password' => 'cashier123',
+            'name' => 'Cashier User',
+            'role' => 'cashier'
+        ]
+    ];
+
     public function showLogin()
     {
         if (session('admin_logged_in')) {
@@ -16,14 +31,11 @@ class AdminAuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = [
-            ['email' => 'admin@posystem.com', 'password' => 'admin123', 'name' => 'System Administrator', 'role' => 'Admin'],
-            ['email' => 'manager@posystem.com', 'password' => 'manager123', 'name' => 'Store Manager', 'role' => 'Manager'],
-            ['email' => 'cashier@posystem.com', 'password' => 'cashier123', 'name' => 'Lead Cashier', 'role' => 'Cashier']
-        ];
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-        foreach ($credentials as $user) {
-            if ($request->email === $user['email'] && $request->password === $user['password']) {
+        foreach ($this->users as $user) {
+            if ($user['email'] === $email && $user['password'] === $password) {
                 session([
                     'admin_logged_in' => true,
                     'admin_user' => $user
@@ -32,7 +44,7 @@ class AdminAuthController extends Controller
             }
         }
 
-        return back()->withErrors(['Invalid credentials']);
+        return back()->with('error', 'Invalid credentials');
     }
 
     public function logout()
